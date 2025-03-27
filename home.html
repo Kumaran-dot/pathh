@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProtectPath</title>
+    <style>
+        /* General Page Styles */
+        body {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0057A7, #87CEEB);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Star Animation */
+        .stars {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            opacity: 0.6;
+            animation: moveStars 15s linear infinite, twinkle 4s infinite;
+        }
+
+        @keyframes moveStars {
+            from {
+                transform: translateY(0);
+            }
+            to {
+                transform: translateY(-150vh);
+            }
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 6;
+            }
+            50% {
+                opacity: 6;
+            }
+        }
+
+        /* Container for Page Content */
+        .container {
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Title (Stable) */
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Button Container */
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* Individual Buttons (Floating) */
+        .button {
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            transition: transform 0.2s, box-shadow 0.3s;
+            cursor: pointer;
+            animation: float 3s ease-in-out infinite alternate;
+        }
+
+        .button:nth-child(odd) {
+            animation-duration: 3.5s;
+        }
+
+        .button:nth-child(even) {
+            animation-duration: 3s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+            }
+            100% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .button:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="container">
+        <h1>ProtectPath</h1>
+        <div class="button-container">
+            <button class="button" onclick="window.location.href='location.html';">📍 Track me</button>
+            <button class="button" onclick="window.location.href='Panic.html';">🚨 Panic</button>
+            <button class="button" onclick="window.location.href='alert.html';">🗺️ Travel</button>
+            <button class="button" onclick="window.location.href='savesecure.html';">📞 Save & Secure</button>
+            <button class="button" onclick="window.location.href='friends.html';">👥 Friends</button>
+            <button class="button" onclick="window.location.href='fs.html';">🕵️Flash nd Siren</button>
+            <button class="button" onclick="window.location.href='about.html';">ℹ️ About</button>
+            <button class="button" onclick="window.location.href='emergency.html';">🆘 Help</button>
+            <button class="button" onclick="window.location.href='map.html';">💬 Feedback</button>
+            <button class="button" onclick="window.location.href='info.html';">🚪 Logout</button>
+        </div>
+    </div>
+    <script>
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            for (let i = 0; i < 80; i++) {
+                let star = document.createElement('div');
+                star.classList.add('star');
+                star.style.left = Math.random() * 100 + 'vw';
+                star.style.top = Math.random() * 100 + 'vh';
+                star.style.animationDuration = (Math.random() * 10 + 10) + 's'; // Slower movement
+                starsContainer.appendChild(star);
+            }
+        }
+        createStars();
+    </script>
+</body>
+</html>

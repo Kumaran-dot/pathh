@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panic Shake SOS Alert</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f8d7da;
+        }
+        h2 {
+            color: #721c24;
+        }
+        p {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .alert-box {
+            display: none;
+            padding: 20px;
+            background-color: red;
+            color: white;
+            font-size: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>Panic Shake SOS Alert</h2>
+    <p>Shake your phone to trigger an alert and notify your emergency contact!</p>
+    <div class="alert-box" id="alertBox">🚨 Emergency Alert Sent! 🚨</div>
+
+    <script>
+        let lastX = 0, lastY = 0, lastZ = 0;
+        let shakeThreshold = 15;
+        let alertBox = document.getElementById("alertBox");
+
+        // Define SOS Contact (Replace this with the actual contact number)
+        let sosNumber = "1234567890"; // Replace with the emergency contact number
+        let sosMessage = "🚨 EMERGENCY! I need help. This is my location: ";
+
+        function sendSOS() {
+            // Attempt to get the user's location
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    let latitude = position.coords.latitude;
+                    let longitude = position.coords.longitude;
+                    let locationLink = `https://maps.google.com/?q=${latitude},${longitude}`;
+                    let fullMessage = `${sosMessage} ${locationLink}`;
+
+                    // Open SMS app with pre-filled message
+                    window.location.href = `sms:${sosNumber}?body=${encodeURIComponent(fullMessage)}`;
+                }, () => {
+                    // If location access is denied, send an alert without location
+                    window.location.href = `sms:${sosNumber}?body=${encodeURIComponent(sosMessage + " Location unavailable!")}`;
+                });
+            } else {
+                // If geolocation is not supported, send an alert without location
+                window.location.href = `sms:${sosNumber}?body=${encodeURIComponent(sosMessage + " Location unavailable!")}`;
+            }
+        }
+
+        window.addEventListener("devicemotion", (event) => {
+            let acc = event.accelerationIncludingGravity;
+            if (!acc) return;
+
+            let deltaX = Math.abs(acc.x - lastX);
+            let deltaY = Math.abs(acc.y - lastY);
+            let deltaZ = Math.abs(acc.z - lastZ);
+
+            if (deltaX > shakeThreshold || deltaY > shakeThreshold || deltaZ > shakeThreshold) {
+                alertBox.style.display = "block";
+                setTimeout(() => { alertBox.style.display = "none"; }, 3000);
+                sendSOS(); // Send the SOS message when shake is detected
+            }
+
+            lastX = acc.x;
+            lastY = acc.y;
+            lastZ = acc.z;
+        });
+    </script>
+</body>
+</html>
